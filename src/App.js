@@ -1,23 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import Bubble from "./components/Bubble";
+
+let counter = 0;
+let timeout = 1000;
 
 function App() {
+  const [bubbles, setBubbles] = useState([]);
+
+  const popBubble = (key) => {
+    console.log(key);
+    setBubbles(bubbles.filter((bubble) => bubble.key !== key));
+  };
+
+  const addBubble = () => {
+    setBubbles([
+      ...bubbles,
+      {
+        key: counter,
+        bubble: <Bubble />,
+      },
+    ]);
+    counter++;
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(addBubble, timeout - counter);
+    return () => clearTimeout(timer);
+  }, [bubbles]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <button type="button" onClick={addBubble}>
+        Dodaj
+      </button>
+      {bubbles.map((bubble) => (
+        <div
+          key={bubble.key}
+          onClick={(e) => {
+            e.preventDefault();
+            popBubble(bubble.key);
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          {bubble.bubble}
+        </div>
+      ))}
     </div>
   );
 }

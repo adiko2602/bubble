@@ -13,23 +13,25 @@ const backgroundColors = [
   "#eaeef9",
 ];
 
-export default function Bubble() {
-  const randomInt = (min, max) => {
-    return Math.round(Math.random() * (max - min) + min);
-  };
-
-  const size = randomInt(4, 20);
+export default function Bubble({ randomInt }) {
+  const size = randomInt(6, 14);
 
   const style = {
-    width: `${size}vw`,
-    height: `${size}vw`,
+    position: "absolute",
+    width: `${size}rem`,
+    height: `${size}rem`,
     backgroundColor:
       backgroundColors[randomInt(0, backgroundColors.length - 1)],
     borderRadius: "50%",
-    position: "absolute",
     top: window.innerHeight,
-    left: randomInt(0, window.innerWidth - size),
+    left: randomInt(0, window.innerWidth - size * 16),
   };
 
-  return <div className="bubble" style={style}></div>;
+  const bubbleOnTop = () => {
+    console.log("end");
+  };
+
+  return (
+    <div onAnimationEnd={bubbleOnTop} className="bubble" style={style}></div>
+  );
 }
